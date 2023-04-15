@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "jupyter-notebook-protobuf"
+version = "0.1.0"
+description = ""
+authors = ["gaurav-batra-couture <gaurav.batra@couture.ai>"]
+readme = "README.md"
+packages = [{include = "jupyter_notebook_protobuf"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+flask = "^2.2.3"
+protobuf = "^4.22.3"
+grpcio-tools = "^1.53.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

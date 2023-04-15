@@ -1,0 +1,53 @@
+syntax = "proto3";
+service NotebookService {
+  // Creates a new notebook with the specified name and author
+  rpc CreateNotebook(NotebookCreateRequest) returns (Notebook) {}
+}
+
+message NotebookCreateRequest {
+  // The name of the new notebook
+  string name = 1;
+  // The author of the new notebook
+  string author = 2;
+}
+
+message Notebook {
+  // The name of the notebook
+  string name = 1;
+  // The author of the notebook
+  string author = 2;
+  // The creation date of the notebook in ISO 8601 format
+  string created = 3;
+  // The last modification date of the notebook in ISO 8601 format
+  string modified = 4;
+  // The cells in the notebook
+  repeated Cell cells = 5;
+}
+
+message Cell {
+  // The type of the cell
+  enum Type {
+    CODE = 0;
+    MARKDOWN = 1;
+  }
+  // The type of the cell
+  Type type = 1;
+  // The source code or markdown content of the cell
+  string source = 2;
+  // The outputs of the cell
+  repeated Output outputs = 3;
+}
+
+message Output {
+  // The type of the output
+  enum Type {
+    STREAM = 0;
+    ERROR = 1;
+    DISPLAY_DATA = 2;
+    EXECUTE_RESULT = 3;
+  }
+  // The type of the output
+  Type type = 1;
+  // The text content of the output
+  string text = 2;
+}
