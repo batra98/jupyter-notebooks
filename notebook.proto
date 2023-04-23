@@ -2,6 +2,94 @@ syntax = "proto3";
 service NotebookService {
   // Creates a new notebook with the specified name and author
   rpc CreateNotebook(NotebookCreateRequest) returns (Notebook) {}
+  // Retrieves the notebook with the specified id
+  rpc GetNotebook(NotebookGetRequest) returns (Notebook) {}
+  // Updates the notebook with the specified name and author
+  rpc UpdateNotebook(NotebookUpdateRequest) returns (Notebook) {}
+  // Deletes the notebook with the specified id
+  rpc DeleteNotebook(NotebookDeleteRequest) returns (NotebookDeleteResponse) {}
+  // Retrieves the list of all notebooks
+  rpc ListNotebooks(NotebookListRequest) returns (NotebookListResponse) {}
+  // Creates a new cell in an existing notebook
+  rpc CreateCell(CreateCellRequest) returns (Cell) {}
+
+  // Retrieves an existing cell by its ID
+  rpc GetCell(CellIDRequest) returns (Cell) {}
+
+  // Updates an existing cell by its ID
+  rpc UpdateCell(UpdateCellRequest) returns (Cell) {}
+
+  // Deletes an existing cell by its ID
+  rpc DeleteCell(CellIDRequest) returns (DeleteCellResponse) {}
+
+  // Executes a cell and returns its output
+  rpc ExecuteCell(ExecuteCellRequest) returns (ExecuteCellResponse) {}
+}
+
+message ExecuteCellResponse {
+  repeated Output output = 1;
+}
+
+message ExecuteCellRequest {
+  int32 notebook_id = 1;
+  int32 cell_id = 2;
+}
+
+message DeleteCellResponse {
+  bool success = 1;
+}
+
+message UpdateCellRequest {
+  int32 notebook_id = 4;
+  int32 cell_id = 1;
+  Cell.Type type = 2;
+  string source = 3;
+}
+
+message CellIDRequest {
+  int32 notebook_id = 2;
+  int32 cell_id = 1;
+}
+
+message CreateCellRequest {
+  int32 notebook_id = 1;
+  // The type of the cell
+  Cell.Type type = 2;
+  // The source code or markdown content of the cell
+  string source = 3;
+}
+
+message NotebookListResponse {
+  repeated Notebook notebooks = 1;
+}
+
+message NotebookListRequest {
+  int32 limit = 1;
+  int32 offset = 2;
+}
+
+message NotebookGetRequest 
+{
+  // The id of the notebook to retrieve
+  int32 id = 1;
+
+}
+
+message NotebookUpdateRequest {
+  int32 id = 1;
+  // The updated author of the notebook (optional)
+  optional string author = 2;
+  // The updated name of the notebook (optional)
+  string name = 3;
+  
+}
+
+message NotebookDeleteRequest {
+  int32 id = 1;
+}
+
+message  NotebookDeleteResponse {
+  bool success = 1;
 }
 
 message NotebookCreateRequest {
@@ -11,20 +99,8 @@ message NotebookCreateRequest {
   string author = 2;
 }
 
-message Notebook {
-  // The name of the notebook
-  string name = 1;
-  // The author of the notebook
-  string author = 2;
-  // The creation date of the notebook in ISO 8601 format
-  string created = 3;
-  // The last modification date of the notebook in ISO 8601 format
-  string modified = 4;
-  // The cells in the notebook
-  repeated Cell cells = 5;
-}
-
 message Cell {
+  int32 id = 4;
   // The type of the cell
   enum Type {
     CODE = 0;
@@ -37,6 +113,22 @@ message Cell {
   // The outputs of the cell
   repeated Output outputs = 3;
 }
+
+message Notebook {
+  int32 id = 1;
+  // The name of the notebook
+  string name = 2;
+  // The author of the notebook
+  string author = 3;
+  // The creation date of the notebook in ISO 8601 format
+  string created = 4;
+  // The last modification date of the notebook in ISO 8601 format
+  string updated = 5;
+  // The cells in the notebook
+  map <int32,Cell> cells = 6;
+}
+
+
 
 message Output {
   // The type of the output

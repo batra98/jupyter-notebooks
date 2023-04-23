@@ -11,6 +11,8 @@ python = "^3.11"
 flask = "^2.2.3"
 protobuf = "^4.22.3"
 grpcio-tools = "^1.53.0"
+sqlalchemy = "^2.0.9"
+sqlalchemy-utils = "^0.41.0"
 
 
 [build-system]
