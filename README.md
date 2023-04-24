@@ -8,7 +8,8 @@ This is a Notebook gRPC API implemented in Python. It allows users to create, re
 This project uses poetry for dependency management.
 
 1. Clone the repository
-2. Install dependencies with `poetry install`
+2. Make a directory called `notebooks` inside the project. This will be used to store your (serialized) notebooks.
+3. Install dependencies with `poetry install`
 4. Set up the database URL in `config/db_env.py`
 5. Run the server with `python server.py`
 

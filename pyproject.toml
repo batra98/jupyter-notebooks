@@ -4,7 +4,7 @@ version = "0.1.0"
 description = ""
 authors = ["gaurav-batra-couture <gaurav.batra@couture.ai>"]
 readme = "README.md"
-packages = [{include = "jupyter_notebook_protobuf"}]
+packages = []
 
 [tool.poetry.dependencies]
 python = "^3.11"
