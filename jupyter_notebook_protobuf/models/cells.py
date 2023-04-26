@@ -1,7 +1,7 @@
 from .base import Base, intpk, str64, notebookfk
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy_utils.models import Timestamp
-from protoc.gen.notebook_pb2 import Cell
+from ..protoc.gen.notebook_pb2 import Cell
 from sqlalchemy import Integer, ForeignKey, String
 
 

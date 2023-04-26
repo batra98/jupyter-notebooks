@@ -1,8 +1,8 @@
-from protoc.gen.notebook_pb2_grpc import (
+from .protoc.gen.notebook_pb2_grpc import (
     NotebookServiceServicer,
     add_NotebookServiceServicer_to_server,
 )
-from protoc.gen.notebook_pb2 import (
+from .protoc.gen.notebook_pb2 import (
     Notebook,
     NotebookCreateRequest,
     NotebookGetRequest,
@@ -26,12 +26,12 @@ from concurrent import futures
 from datetime import timezone
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
-from models import Base, NotebookModel, CellModel
+from .models import Base, NotebookModel, CellModel
 from functools import wraps
 import subprocess
 import os
 
-from config.db_env import DATABASE_URL
+from .config.db_env import DATABASE_URL
 
 NotebookDict = dict[int, Notebook]
 

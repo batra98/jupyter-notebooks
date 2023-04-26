@@ -1,8 +1,7 @@
-from .base import Base, intpk, str64
+from .base import Base
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy_utils.models import Timestamp
-from protoc.gen.notebook_pb2 import Notebook
-from sqlalchemy import Integer, String
+from sqlalchemy import Integer
 
 
 class NotebookModel(Base, Timestamp):

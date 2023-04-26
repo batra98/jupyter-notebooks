@@ -1,4 +1,4 @@
-from protoc.gen.notebook_pb2 import (
+from .protoc.gen.notebook_pb2 import (
     Notebook,
     Cell,
     Output,
@@ -10,7 +10,7 @@ from protoc.gen.notebook_pb2 import (
     NotebookListRequest,
     NotebookListResponse,
 )
-from protoc.gen.notebook_pb2_grpc import NotebookServiceStub
+from .protoc.gen.notebook_pb2_grpc import NotebookServiceStub
 import grpc
 
 channel = grpc.insecure_channel("localhost:50052")

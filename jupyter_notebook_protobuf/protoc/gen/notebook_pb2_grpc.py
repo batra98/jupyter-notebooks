@@ -2,7 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-import protoc.gen.notebook_pb2 as notebook__pb2
+from . import notebook_pb2 as notebook__pb2
 
 
 class NotebookServiceStub(object):

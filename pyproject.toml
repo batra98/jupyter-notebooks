@@ -1,10 +1,10 @@
 [tool.poetry]
-name = "jupyter-notebook-protobuf"
+name = "jupyter_notebook_protobuf"
 version = "0.1.0"
 description = ""
 authors = ["gaurav-batra-couture <gaurav.batra@couture.ai>"]
 readme = "README.md"
-packages = []
+packages = [{include = "jupyter_notebook_protobuf"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
