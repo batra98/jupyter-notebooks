@@ -27,7 +27,7 @@ print(
 )
 
 
-notebookGetRequest: NotebookGetRequest = NotebookGetRequest(id=notebook.id)
+notebookGetRequest: NotebookGetRequest = NotebookGetRequest(id=1)
 notebookGet: Notebook = stub.GetNotebook(notebookGetRequest)
 
 print(notebookGet)
