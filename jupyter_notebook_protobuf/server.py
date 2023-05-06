@@ -1,4 +1,8 @@
-from jupyter_notebook_protobuf.config.db_env import DATABASE_URL
+from jupyter_notebook_protobuf.config import (
+    DATABASE_URL,
+    REDIS_PORT,
+    REDIS_HOST,
+)
 
 from jupyter_notebook_protobuf.protoc.gen.notebook_pb2_grpc import (
     NotebookServiceServicer,
@@ -42,7 +46,7 @@ logger = logging.Logger(__name__)
 NotebookDict = dict[int, Notebook]
 
 
-redis_client = redis.Redis(host="localhost", port=6379)
+redis_client = redis.Redis(host=REDIS_HOST, port=REDIS_PORT)
 
 
 def check_redis_connection():
