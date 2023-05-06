@@ -1,8 +1,10 @@
-from .protoc.gen.notebook_pb2_grpc import (
+from jupyter_notebook_protobuf.config.db_env import DATABASE_URL
+
+from jupyter_notebook_protobuf.protoc.gen.notebook_pb2_grpc import (
     NotebookServiceServicer,
     add_NotebookServiceServicer_to_server,
 )
-from .protoc.gen.notebook_pb2 import (
+from jupyter_notebook_protobuf.protoc.gen.notebook_pb2 import (
     Notebook,
     NotebookCreateRequest,
     NotebookGetRequest,
@@ -26,14 +28,60 @@ from concurrent import futures
 from datetime import timezone
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
-from .models import Base, NotebookModel, CellModel
+from jupyter_notebook_protobuf.models import Base, NotebookModel, CellModel
 from functools import wraps
 import subprocess
 import os
+import redis
+import logging
 
-from .config.db_env import DATABASE_URL
+logger = logging.Logger(__name__)
+
+# from .config.db_env import DATABASE_URL
 
 NotebookDict = dict[int, Notebook]
+
+
+redis_client = redis.Redis(host="localhost", port=6379)
+
+
+def check_redis_connection():
+    try:
+        return redis_client.ping()
+    except redis.exceptions.ConnectionError as e:
+        logger.log(level=logging.WARN, msg=e)
+        return False
+
+
+# print(check_redis_connection())
+
+
+def cache_notebook(f):
+    """
+    A decorator to cache the result of the given function for a given notebook ID.
+    """
+
+    @wraps(f)
+    def wrapper(self, *args, **kwargs):
+        # print(type(args[0]))
+        request: NotebookGetRequest = args[0]
+        redis_available = check_redis_connection()
+
+        if request and redis_available:
+            notebook: bytes = redis_client.get(f"notebook:{request.id}")
+
+            if notebook is not None:
+                return Notebook().FromString(notebook)
+
+            notebook: Notebook = f(self, *args, **kwargs)
+
+            if notebook:
+                redis_client.set(f"notebook:{request.id}", notebook.SerializeToString())
+                return notebook
+
+        return f(self, *args, **kwargs)
+
+    return wrapper
 
 
 def provide_session(f):
@@ -86,6 +134,7 @@ class NotebookService(NotebookServiceServicer):
 
         return notebook
 
+    @cache_notebook
     @provide_session
     def GetNotebook(
         self,
